@@ -26,16 +26,22 @@ app.get("/", (req, res) => {
   res.status(200).send({ msg: "Hello World"});
 });
 
-app.get("/location", (req, res) => {
+app.get("/location", (req, res, next) => {
   const data = require("./data/location");
   const { city } = req.query;
+  if (!city) return next(new Error());
+  else if (!isNaN(city)) return next(new Error());
+
   let locationData = new Location(city, data);
   res.status(200).send(locationData);
 });
 
-app.get("/weather", (req, res) => {
+app.get("/weather", (req, res, next) => {
   const weatherData = require('./data/weather.json');
   let { city } = req.query;
+  if (!city) return next(new Error());
+  else if (!isNaN(city)) return next(new Error());
+
   const data = [];
   weatherData.data.forEach(item => {
     data.push(new Weather(city, item));
@@ -44,7 +50,11 @@ app.get("/weather", (req, res) => {
 })
 
 app.all("*", (req, res) => {
-  res.status(500).send({ msg: "Sorry, something went wrong"});
+  res.status(404).send({ msg: "Sorry, page not found !"});
+})
+
+app.use((err, req, res, next) => { // eslint-disable-line
+  res.status(500).send({ msg: "Sorry, something went wrong !"});
 })
 
 const PORT = process.env.PORT || 3000;
