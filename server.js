@@ -29,24 +29,27 @@ app.get("/", (req, res) => {
 app.get("/location", (req, res, next) => {
   const data = require("./data/location");
   const { city } = req.query;
-  if (!city) return next(new Error());
-  else if (!isNaN(city)) return next(new Error());
-
-  let locationData = new Location(city, data);
-  res.status(200).send(locationData);
+  try {
+    if (!city) throw new Error();
+    else if (!isNaN(city)) throw new Error();
+    let locationData = new Location(city, data);
+    res.status(200).send(locationData);
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.get("/weather", (req, res, next) => {
   const weatherData = require('./data/weather.json');
-  let { city } = req.query;
-  if (!city) return next(new Error());
-  else if (!isNaN(city)) return next(new Error());
+  let { search_query } = req.query;
+  if (!search_query) return next(new Error());
+  else if (!isNaN(search_query)) return next(new Error());
 
-  const data = [];
-  weatherData.data.forEach(item => {
-    data.push(new Weather(city, item));
+  const result = weatherData.data.map(item => {
+    return new Weather(search_query, item);
   });
-  res.send(data);
+
+  res.send(result);
 })
 
 app.all("*", (req, res) => {
