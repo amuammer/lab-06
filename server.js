@@ -5,12 +5,12 @@ const axios = require("axios");
 
 const Location = require("./Models/Location").default;
 const Weather = require("./Models/Weather").default;
+const Trails = require("./Models/Trails").default;
 
 const app = express();
 
 app.all("*", (req, res, next) => {
   console.log(`${req.method} ${req.url}`);
-
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -42,27 +42,62 @@ app.get("/location", (req, res, next) => {
 });
 
 function getData(city, callback){
-  let GEOCODE_API_KEY = process.env.GEOCODE_API_KEY;
-  let url = `https://eu1.locationiq.com/v1/search.php?key=${GEOCODE_API_KEY}&q=${city}&format=json`;
+  let LOCATIONAPIKEY = process.env.LOCATIONAPIKEY;
+  let url = `https://eu1.locationiq.com/v1/search.php?key=${LOCATIONAPIKEY}&q=${city}&format=json`;
   axios.get(url).then(response => {
     callback(new Location(city, response.data));
   });
 }
 
+app.get("/weather", handelWeather);
 
+function handelWeather(req, res) {
+  let city = req.query.search_query;
 
-app.get("/weather", (req, res, next) => {
-  const weatherData = require('./data/weather.json');
-  let { search_query } = req.query;
-  if (!search_query) return next(new Error());
-  else if (!isNaN(search_query)) return next(new Error());
-
-  const result = weatherData.data.map(item => {
-    return new Weather(search_query, item);
+  getWeather(city, (returnedData) => {
+    res.status(200).send(returnedData);
   });
+}
 
-  res.send(result);
-})
+function getWeather(city, callback) {
+  Weather.all = [];
+
+  let WEATHER_API_KEY = process.env.WEATHER_API_KEY;
+  let url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${WEATHER_API_KEY}`;
+
+  axios.get(url).then(data => {
+    const returnedData = data.data.data.map(item => {
+      return new Weather(city, item);
+    });
+    // after map => return returnedData
+    callback(returnedData);
+  });
+}
+
+app.get("/trails", handelTrails);
+
+function handelTrails(req, res) {
+  let latitude = req.query.latitude;
+  let longitude = req.query.longitude;
+
+  getTrails(latitude, longitude).then(returnedData => {
+    res.send(returnedData);
+  }).catch((err) => {
+    console.log(err.message);
+  });
+}
+
+function getTrails(lat, lon) {
+  let HIKING_API_KEY = process.env.HIKING_API_KEY;
+  let url = `https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lon}&maxDistance=1000&key=${HIKING_API_KEY}`;
+
+  return axios.get(url).then(data => {
+    return data.data.trails.map(data => {
+      return new Trails(data);
+    });
+  });
+}
+
 
 app.all("*", (req, res) => {
   res.status(404).send({ msg: "Sorry, page not found !"});
