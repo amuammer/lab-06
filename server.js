@@ -1,6 +1,8 @@
 const express = require("express");
 require("dotenv").config();
 
+const axios = require("axios");
+
 const Location = require("./Models/Location").default;
 const Weather = require("./Models/Weather").default;
 
@@ -27,17 +29,27 @@ app.get("/", (req, res) => {
 });
 
 app.get("/location", (req, res, next) => {
-  const data = require("./data/location");
   const { city } = req.query;
   try {
     if (!city) throw new Error();
     else if (!isNaN(city)) throw new Error();
-    let locationData = new Location(city, data);
-    res.status(200).send(locationData);
+    getData(city, (locationData) => {
+      res.status(200).send(locationData);
+    });
   } catch (e) {
     next(e);
   }
 });
+
+function getData(city, callback){
+  let GEOCODE_API_KEY = process.env.GEOCODE_API_KEY;
+  let url = `https://eu1.locationiq.com/v1/search.php?key=${GEOCODE_API_KEY}&q=${city}&format=json`;
+  axios.get(url).then(response => {
+    callback(new Location(city, response.data));
+  });
+}
+
+
 
 app.get("/weather", (req, res, next) => {
   const weatherData = require('./data/weather.json');
