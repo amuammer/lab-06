@@ -43,7 +43,7 @@ app.get("/location", (req, res, next) => {
 
 function getData(city, callback){
   let LOCATIONAPIKEY = process.env.LOCATIONAPIKEY;
-  let url = `https://eu1.locationiq.com/v1/search.php?key=${LOCATIONAPIKEY}&q=${city}&format=json`;
+  let url = `https://eu1.locationiq.com/v1/autocomplete.php?key=${LOCATIONAPIKEY}&q=${city}&format=json`;
   axios.get(url).then(response => {
     callback(new Location(city, response.data));
   });

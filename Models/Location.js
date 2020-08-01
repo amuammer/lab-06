@@ -3,4 +3,5 @@ exports.default = function (city, data) {
   this.formatted_query = data[0].display_name;
   this.latitude = data[0].lat;
   this.longitude = data[0].lon;
+  this.countryCode = data[0].address.country_code;
 }
