@@ -1,34 +1,118 @@
 # Project Name
 
 **Author**: Adnan <br/>
-**Version**: 0.0.1 <br/>
+**Version**: 1.0.0 <br/>
 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
-<!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
+In this application we are building an app that depends on APIs. In other words our application acts as an intermediary between APIs. We are receiving request from CodeFlows API then we call multi APIs to get location, weather, hicking, movie and restruants information.
 
 ## Getting Started
-<!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
-
+to get started you have to follow the next instructions
+```bash
+npm install
+npm start
+```
+-> if you are developer
+```bash
+npm run dev # run with node_mon
+```
 ## Architecture
-<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
+To run this application, we used NodeJs as a programming language. We used Heroku to deploy the application. Also we used a set of npm libaries such as express, pg, dotenv, superagent.
 
 ## Change Log
-<!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
 
-01-01-2001 4:59pm - Application now has a fully-functional express server, with a GET route for the location resource.
+Number and name of feature: setup repo && adding /location endpoint
 
-## Credits and Collaborations
-<!-- Give credit (and a link) to other people or resources that helped you build this application. -->
+Estimate of time needed to complete: 59 minutes
 
-### **-----------------**
+Start time: 1:00
 
-Number and name of feature: ________________________________
+Finish time: 2:00
 
-Estimate of time needed to complete: _____
+Actual time needed to complete: 1 hour
 
-Start time: _____
+----------
 
-Finish time: _____
+Number and name of feature:  adding /weather endpoint
 
-Actual time needed to complete: _____
+Estimate of time needed to complete: 59 minutes
+
+Start time: 2:00
+
+Finish time: 3:00
+
+Actual time needed to complete: 1 hour
+
+------------
+
+Number and name of feature: adding save to DB option of locations
+
+Estimate of time needed to complete: 59 minutes
+
+Start time: 1:00
+
+Finish time: 2:00
+
+Actual time needed to complete: 1 hour
+
+---------------
+
+
+Number and name of feature: adding save to DB option of locations
+
+Estimate of time needed to complete: 59 minutes
+
+Start time: 1:00
+
+Finish time: 2:00
+
+Actual time needed to complete: 1 hour
+
+---------------
+
+Number and name of feature: deploy to heroku
+
+Estimate of time needed to complete: 59 minutes
+
+Start time: 2:00
+
+Finish time: 3:00
+
+Actual time needed to complete: 1 hour
+
+--------------
+
+Number and name of feature: adding /movies endpoint
+
+Estimate of time needed to complete: 59 minutes
+
+Start time: 1:00
+
+Finish time: 2:00
+
+Actual time needed to complete: 1 hour
+
+------------
+
+Number and name of feature: adding /yelp endpoint
+
+Estimate of time needed to complete: 59 minutes
+
+Start time: 2:00
+
+Finish time: 3:00
+
+Actual time needed to complete: 1 hour
+
+-------------
+
+Number and name of feature: deploy to heroku
+
+Estimate of time needed to complete: 59 minutes
+
+Start time: 3:00
+
+Finish time: 4:00
+
+Actual time needed to complete: 1 hour
